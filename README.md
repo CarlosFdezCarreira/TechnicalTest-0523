@@ -1,6 +1,16 @@
 # TechnicalTest-0523
 
-To launch this app, on root folder execute:
 
-npm run start:server (this will launch the mock server on port 3030)
-npm start (this will launch the app on port 8080)
+## Launch this app
+
+To launch the mock server (port 3030) execute in the root folder:
+
+```bash
+npm run start:server
+```
+
+To launch the app (port 8080) execute in the root folder:
+
+```bash
+npm start
+```
