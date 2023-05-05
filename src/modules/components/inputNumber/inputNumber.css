@@ -1,6 +1,6 @@
-.inputNumber{
-    border: none;
-    outline: none;
+.inputNumber {
+  border: none;
+  outline: none;
 }
 
 input::-webkit-outer-spin-button,

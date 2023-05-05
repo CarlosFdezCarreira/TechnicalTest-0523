@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import "./inputNumber.css";
 
 function InputNumber({ value, onChange, className, disabled }) {

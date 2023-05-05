@@ -8,7 +8,7 @@ import Range from "../../components/range/Range";
 
     return(
         <Range
-            data={data}
+            values={data}
         />
     )
 
