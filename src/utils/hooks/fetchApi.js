@@ -14,10 +14,8 @@ export const useFetchData = (URL = '', error_msg = 'An error has ocurred getting
                     throw new Error(`Http status ${response.status}`);
                 }
                 const data = await response.json();
-                console.log(data);
                 setFetchData(data);
             } catch (error) {
-                console.error(error.message);
                 setError(error_msg)
             }
             setLoading(false);

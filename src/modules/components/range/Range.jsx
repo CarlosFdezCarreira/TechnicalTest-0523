@@ -3,26 +3,46 @@ import React, { useState, useEffect, useRef } from "react";
 import InputNumber from "../inputNumber/inputNumber";
 import "./range.css";
 
-const Range = ({ values = Array.from({ length: 200 }, (_, i) => i + 1) }) => {
-  const [selectedRange, setSelectedRange] = useState([
-    Math.min(...values),
-    Math.max(...values),
-  ]);
+const Range = ({ values = [1, 2, 3], min, max, step = 1, mode = "normal" }) => {
+  const [range, setRange] = useState([]);
+  const [selectedRange, setSelectedRange] = useState([]);
   const [index1, setIndex1] = useState(null);
   const [index2, setIndex2] = useState(null);
 
-  const rangeSize = values[values.length - 1] - values[0];
+  const [hovered, setHovered] = useState([false, false]);
 
-  const selector1Pos = ((selectedRange[0] - values[0]) / rangeSize) * 100;
-  const selector2Pos = ((selectedRange[1] - values[0]) / rangeSize) * 100;
+  useEffect(() => {
+    if (mode === "normal") {
+      //We make an array with the min and max. At the moment we asume step is gonna be 1, but the component is ready to take another values
+      const length = (max - min) / step + 1;
+      const range = Array.from({ length }, (_, i) => min + i * step);
+      setRange(range);
+      setSelectedRange([Math.min(...range), Math.max(...range)]);
+    }
+    if (mode == "fixed") {
+      setRange(values);
+      setSelectedRange([Math.min(...values), Math.max(...values)]);
+    }
+  }, []);
+
+  const rangeSize = range[range.length - 1] - range[0];
+  const selector1Pos = ((selectedRange[0] - range[0]) / rangeSize) * 100;
+  const selector2Pos = ((selectedRange[1] - range[0]) / rangeSize) * 100;
+
+  const hover1 = hovered[0] ? "bulletHover" : "";
+  const hover2 = hovered[1] ? "bulletHover" : "";
+
+  const disabled = mode == "normal" ? false : true;
+
   const selectedRangeWidth = selector2Pos - selector1Pos;
 
+  //Function to calculate the new position with the given restrictions
   const changeSelector1 = (index) => {
     let newIndex1 = index;
     if (newIndex1 >= index2) {
       newIndex1 = index2 - 1;
     }
-    const newSelectedRange = [values[newIndex1], selectedRange[1]];
+    const newSelectedRange = [range[newIndex1], selectedRange[1]];
     setIndex1(newIndex1);
     setSelectedRange(newSelectedRange);
   };
@@ -32,11 +52,12 @@ const Range = ({ values = Array.from({ length: 200 }, (_, i) => i + 1) }) => {
     if (newIndex2 <= index1) {
       newIndex2 = index1 + 1;
     }
-    const newSelectedRange = [selectedRange[0], values[newIndex2]];
+    const newSelectedRange = [selectedRange[0], range[newIndex2]];
     setIndex2(newIndex2);
     setSelectedRange(newSelectedRange);
   };
 
+  //Handle to determinate the distance to move the bullet when the mouse is pressed on, and its dragging
   const handleSelector1Drag = (event) => {
     const container = event.target.parentNode;
     if (!container.getBoundingClientRect) return;
@@ -44,7 +65,7 @@ const Range = ({ values = Array.from({ length: 200 }, (_, i) => i + 1) }) => {
     const containerWidth = containerRect.width;
     const mouseX = event.clientX - containerRect.left;
     const newSelector1Pos = (mouseX / containerWidth) * 100;
-    let newIndex1 = Math.round((newSelector1Pos / 100) * (values.length - 1));
+    let newIndex1 = Math.round((newSelector1Pos / 100) * (range.length - 1));
     changeSelector1(newIndex1);
   };
 
@@ -55,12 +76,12 @@ const Range = ({ values = Array.from({ length: 200 }, (_, i) => i + 1) }) => {
     const containerWidth = containerRect.width;
     const mouseX = event.clientX - containerRect.left;
     const newSelector2Pos = (mouseX / containerWidth) * 100;
-    let newIndex2 = Math.round((newSelector2Pos / 100) * (values.length - 1));
+    let newIndex2 = Math.round((newSelector2Pos / 100) * (range.length - 1));
     changeSelector2(newIndex2);
   };
 
   const findNumber = (number) => {
-    return values.findIndex((element) => number === element);
+    return range.findIndex((element) => number === element);
   };
 
   const onChangeSelector1 = (value) => {
@@ -71,6 +92,16 @@ const Range = ({ values = Array.from({ length: 200 }, (_, i) => i + 1) }) => {
   const onChangeSelector2 = (value) => {
     const index = findNumber(value);
     changeSelector2(index);
+  };
+
+  const onMouseEnter = (bullet) => {
+    hovered[bullet] = true;
+    setHovered(hovered);
+  };
+
+  const onMouseLeave = (bullet) => {
+    hovered[bullet] = false;
+    setHovered(hovered);
   };
 
   return (
@@ -86,6 +117,7 @@ const Range = ({ values = Array.from({ length: 200 }, (_, i) => i + 1) }) => {
       <div style={{ width: "50%", padding: "20px" }}>
         <div style={{ position: "relative" }}>
           <div
+            className={hover1}
             style={{
               position: "absolute",
               left: `${selector1Pos}%`,
@@ -103,10 +135,18 @@ const Range = ({ values = Array.from({ length: 200 }, (_, i) => i + 1) }) => {
               document.addEventListener("mousemove", handleSelector1Drag);
               document.addEventListener("mouseup", () => {
                 document.removeEventListener("mousemove", handleSelector1Drag);
+                onMouseLeave(0);
               });
+            }}
+            onMouseEnter={() => {
+              onMouseEnter(0);
+            }}
+            onMouseLeave={() => {
+              onMouseLeave(0);
             }}
           />
           <div
+            className={hover2}
             style={{
               position: "absolute",
               left: `${selector2Pos}%`,
@@ -124,7 +164,14 @@ const Range = ({ values = Array.from({ length: 200 }, (_, i) => i + 1) }) => {
               document.addEventListener("mousemove", handleSelector2Drag);
               document.addEventListener("mouseup", () => {
                 document.removeEventListener("mousemove", handleSelector2Drag);
+                onMouseLeave(1);
               });
+            }}
+            onMouseEnter={() => {
+              onMouseEnter(1);
+            }}
+            onMouseLeave={() => {
+              onMouseLeave(1);
             }}
           />
           <div
@@ -154,7 +201,7 @@ const Range = ({ values = Array.from({ length: 200 }, (_, i) => i + 1) }) => {
               onChange={(value) =>
                 onChangeSelector1(parseInt(value.target.value))
               }
-              disabled={false}
+              disabled={disabled}
             />
             <InputNumber
               value={selectedRange[1]}
@@ -162,7 +209,7 @@ const Range = ({ values = Array.from({ length: 200 }, (_, i) => i + 1) }) => {
               onChange={(value) =>
                 onChangeSelector2(parseInt(value.target.value))
               }
-              disabled={false}
+              disabled={disabled}
             />
           </div>
         </div>

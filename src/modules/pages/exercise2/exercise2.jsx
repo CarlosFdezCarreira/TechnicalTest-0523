@@ -1,17 +1,22 @@
-import React  from "react";
+import React from "react";
 
 import { useFetchData } from "../../../utils/hooks/fetchApi";
 import Range from "../../components/range/Range";
 
- const Exercise2 = () => { 
-	const { data } = useFetchData('http://localhost:3030/exercise2');
+const Exercise2 = () => {
+  const { data, loading, error } = useFetchData(
+    "http://localhost:3030/exercise2"
+  );
 
-    return(
-        <Range
-            values={data}
-        />
-    )
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
-}
+  if (error) {
+    return <div>{error.message}</div>;
+  }
+
+  return <Range values={data} mode={"fixed"} />;
+};
 
 export default Exercise2;

@@ -54,3 +54,8 @@
 .range-slider-bullet-right {
   text-align: end;
 }
+
+.bulletHover {
+  cursor: grab;
+  transform: scale(1.2);
+}

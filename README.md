@@ -1,16 +1,50 @@
 # TechnicalTest-0523
 
+#### What is this
+This is a technical test, donde by the owner of this repository on May 2023. 
+In short, the test consists of rendering a component of the style <input> type range, but without using this tag.
 
-## Launch this app
+#### Versions
+  
+| Library   | Version  |
+| :-------- | :------- |
+| `Node`    | `18.12.1`|
+| `npm`     | `9.2.0`  |
 
-To launch the mock server (port 3030) execute in the root folder:
+## Run Locally
+
+Clone the project
 
 ```bash
-npm run start:server
+  git clone https://github.com/CarlosFdezCarreira/TechnicalTest-0523.git
 ```
 
-To launch the app (port 8080) execute in the root folder:
+Go to the project directory
 
 ```bash
-npm start
+  cd TechnicalTest-0523
 ```
+
+Install dependencies
+
+```bash
+  npm install
+```
+
+Start the mock server
+
+```bash
+  npm run start:server
+```
+
+
+Start the server
+
+```bash
+  npm run start
+```
+
+
+## Authors
+
+- [@carlos.carreira](https://github.com/CarlosFdezCarreira)
