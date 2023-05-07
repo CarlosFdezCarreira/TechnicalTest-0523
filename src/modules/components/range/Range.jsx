@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-
 import InputNumber from "../inputNumber/inputNumber";
+
 import "./range.css";
 
-const Range = ({ values = [1, 2, 3], min, max, step = 1, mode = "normal" }) => {
+const Range = ({ values, min, max, step = 1, mode = "normal" }) => {
   const [range, setRange] = useState([]);
   const [selectedRange, setSelectedRange] = useState([]);
   const [index1, setIndex1] = useState(null);
@@ -18,10 +18,14 @@ const Range = ({ values = [1, 2, 3], min, max, step = 1, mode = "normal" }) => {
       const range = Array.from({ length }, (_, i) => min + i * step);
       setRange(range);
       setSelectedRange([Math.min(...range), Math.max(...range)]);
+      setIndex1(0);
+      setIndex2(range.length - 1);
     }
     if (mode == "fixed") {
       setRange(values);
       setSelectedRange([Math.min(...values), Math.max(...values)]);
+      setIndex1(0);
+      setIndex2(values.length - 1);
     }
   }, []);
 
@@ -106,6 +110,7 @@ const Range = ({ values = [1, 2, 3], min, max, step = 1, mode = "normal" }) => {
 
   return (
     <div
+      data-testid="slider"
       style={{
         display: "flex",
         justifyContent: "center",
@@ -117,6 +122,7 @@ const Range = ({ values = [1, 2, 3], min, max, step = 1, mode = "normal" }) => {
       <div style={{ width: "50%", padding: "20px" }}>
         <div style={{ position: "relative" }}>
           <div
+            data-testid="selector1"
             className={hover1}
             style={{
               position: "absolute",
@@ -146,6 +152,7 @@ const Range = ({ values = [1, 2, 3], min, max, step = 1, mode = "normal" }) => {
             }}
           />
           <div
+            data-testid="selector2"
             className={hover2}
             style={{
               position: "absolute",
@@ -202,6 +209,7 @@ const Range = ({ values = [1, 2, 3], min, max, step = 1, mode = "normal" }) => {
                 onChangeSelector1(parseInt(value.target.value))
               }
               disabled={disabled}
+              name="input1"
             />
             <InputNumber
               value={selectedRange[1]}
@@ -210,6 +218,7 @@ const Range = ({ values = [1, 2, 3], min, max, step = 1, mode = "normal" }) => {
                 onChangeSelector2(parseInt(value.target.value))
               }
               disabled={disabled}
+              name="input2"
             />
           </div>
         </div>

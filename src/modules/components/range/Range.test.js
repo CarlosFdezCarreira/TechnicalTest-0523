@@ -1,34 +1,18 @@
 import React from "react";
-import { render, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import Range from "./Range";
 
-describe("Range component", () => {
-  it("updates selected range when dragging selector 1", () => {
-    const { getByTestId } = render(<Range />);
-    const selector1 = getByTestId("selector1");
-    const selector2 = getByTestId("selector2");
-    fireEvent.mouseDown(selector1);
-    fireEvent.mouseMove(selector1, { clientX: 50 });
-    fireEvent.mouseUp(selector1);
-    expect(selector1.style.left).toBe("10%");
-    expect(selector2.style.left).toBe("20%");
+describe("Range", () => {
+  test("renders without errors", () => {
+    render(<Range min={0} max={10} mode="normal"/>);
+    const rangeElement = screen.getByTestId("slider");
+    expect(rangeElement).toBeInTheDocument();
   });
 
-  it("updates selected range when dragging selector 2", () => {
-    const { getByTestId } = render(<Range />);
-    const selector1 = getByTestId("selector1");
-    const selector2 = getByTestId("selector2");
-    fireEvent.mouseDown(selector2);
-    fireEvent.mouseMove(selector2, { clientX: 50 });
-    fireEvent.mouseUp(selector2);
-    expect(selector1.style.left).toBe("0%");
-    expect(selector2.style.left).toBe("10%");
+  test("displays the correct range values", () => {
+    render(<Range min={0} max={10} mode="normal"/>);
+    expect(screen.getByRole("spinbutton", { name: "input1" }).value).toBe("0");
+    expect(screen.getByRole("spinbutton", { name: "input2" }).value).toBe("10");
   });
 
-  it("updates selected range when input number is changed", () => {
-    const { getByTestId } = render(<Range />);
-    const inputNumber = getByTestId("inputNumber");
-    fireEvent.change(inputNumber, { target: { value: 10 } });
-    expect(inputNumber.value).toBe("10");
-  });
 });

@@ -5,12 +5,12 @@ import "./home.css";
 const Home = () => {
   return (
     <div className="container">
-      <h1 className="title">TECHNICAL TEST</h1>
+      <h1 className="title">TECHNICAL_TEST</h1>
       <div className="links">
         <Link className="" to={"/exercise1"}>
-          {" /exercise1 "}
+          {"NORMAL MODE"}
         </Link>
-        <Link to={"/exercise2"}>{" /exercise2 "}</Link>
+        <Link to={"/exercise2"}>{"FIXED MODE"}</Link>
       </div>
     </div>
   );
