@@ -44,6 +44,11 @@ Start the server
   npm run start
 ```
 
+Run the test
+
+```bash
+  npm run test
+```
 
 ## Authors
 

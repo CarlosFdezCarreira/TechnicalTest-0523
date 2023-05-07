@@ -14,5 +14,4 @@ describe("Range", () => {
     expect(screen.getByRole("spinbutton", { name: "input1" }).value).toBe("0");
     expect(screen.getByRole("spinbutton", { name: "input2" }).value).toBe("10");
   });
-
 });
