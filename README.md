@@ -1,7 +1,7 @@
 # TechnicalTest-0523
 
 #### What is this
-This is a technical test, donde by the owner of this repository on May 2023. 
+This is a technical test, done by the owner of this repository on May 2023. 
 In short, the test consists of rendering a component of the style <input> type range, but without using this tag.
 
 #### Versions
